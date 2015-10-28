@@ -40,13 +40,13 @@ defmodule TicTacToe.Game do
 
   defp current_player(board) do
     Enum.count(board, &(&1 === " "))
-    |> convert_to_player
+    |> convert_count_to_player
   end
 
-  defp convert_to_player(empty_count) when rem(empty_count, 2) == 0 do
+  defp convert_count_to_player(empty_count) when rem(empty_count, 2) == 0 do
     "O"
   end
-  defp convert_to_player(empty_count) when rem(empty_count, 2) != 0 do
+  defp convert_count_to_player(empty_count) when rem(empty_count, 2) != 0 do
     "X"
   end
 end
