@@ -9,13 +9,16 @@ defmodule TicTacToe.Game do
   end
 
   defp play(board) do
-    IO.puts "play game"
-    TicTacToe.Board.move(board, 1)
     print_board(board)
+
+    # todo:
+      # * winner/winner?/draw? functions in TicTacToe.Board
+      # * play loop
   end
 
   defp print_board(board) do
     output = TicTacToe.Board.board(board)
+
     IO.puts " #{Enum.at(output, 0)} | #{Enum.at(output, 1)} | #{Enum.at(output, 2)} "
     IO.puts "-----------"
     IO.puts " #{Enum.at(output, 3)} | #{Enum.at(output, 4)} | #{Enum.at(output, 5)} "
