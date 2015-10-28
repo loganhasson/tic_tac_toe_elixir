@@ -7,7 +7,12 @@ defmodule TicTacToe.Mixfile do
      elixir: "~> 1.0",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     escript: escript,
      deps: deps]
+  end
+
+  def escript do
+    [main_module: TicTacToe.Game]
   end
 
   def application do
