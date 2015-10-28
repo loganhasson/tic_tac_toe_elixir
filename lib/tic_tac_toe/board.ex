@@ -1,4 +1,4 @@
-defmodule TicTacToe.Game do
+defmodule TicTacToe.Board do
   use GenServer
 
   def start do
