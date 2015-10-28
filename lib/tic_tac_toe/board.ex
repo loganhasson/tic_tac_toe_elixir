@@ -27,20 +27,21 @@ defmodule TicTacToe.Board do
 
   defp _move(board, position) do
     position = position - 1
+    Enum.fetch(board, position) |> handle_move(board, position)
+  end
 
-    case Enum.fetch(board, position) do
-      {:ok, " "} ->
-        {:ok, List.replace_at(board, position, current_player(board))}
-      {:ok, _} ->
-        {:taken, board}
-      :error ->
-        {:error, board}
-    end
+  defp handle_move({:ok, " "}, board, position) do
+    {:ok, List.replace_at(board, position, current_player(board))}
+  end
+  defp handle_move({:ok, _}, board, _position) do
+    {:taken, board}
+  end
+  defp handle_move(:error, board, _position) do
+    {:error, board}
   end
 
   defp current_player(board) do
-    Enum.count(board, &(&1 === " "))
-    |> convert_count_to_player
+    Enum.count(board, &(&1 === " ")) |> convert_count_to_player
   end
 
   defp convert_count_to_player(empty_count) when rem(empty_count, 2) == 0 do
