@@ -54,24 +54,19 @@ defmodule TicTacToe.Board do
   end
 
   defp _winner(board) do
-    combos = Enum.filter(@winning_combinations, fn (combo) -> is_winning_combo(board, combo) end)
-    IO.puts(combos)
-    #|> get_winner
-    # combos = for combo <- @winning_combinations, is_winning_combo(board, combo), into: [], do: combo
-    #combos |> get_winner
+    Enum.filter_map(@winning_combinations, &is_winning_combo(board, &1), &get_winner(&1, board))
+    |> List.first
   end
-
-  defp get_winner([]), do: nil
-  defp get_winner(winning_combos), do: List.first(winning_combos) |> List.first
 
   defp is_winning_combo(board, combo) do
-    tokens = Enum.map(combo, &(Enum.at(board, &1)))
-    #for index <- combo, into: [], do: Enum.at(board, index)
-    tokens |> are_all_same_tokens
+    Enum.map(combo, &(Enum.at(board, &1)))
+    |> all_one_token
   end
 
-  defp are_all_same_tokens(token_list) do
-    Enum.uniq(token_list) |> Enum.count === 1
+  defp get_winner(combo, board), do: Enum.at(board, List.first(combo))
+
+  defp all_one_token(tokens) do
+    Enum.all?(tokens, &(&1 == "X")) || Enum.all?(tokens, &(&1 == "O"))
   end
 
   defp current_player(board) do
