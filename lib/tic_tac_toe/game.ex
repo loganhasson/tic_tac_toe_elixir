@@ -5,15 +5,21 @@ defmodule TicTacToe.Game do
 
   defp start do
     IO.puts "Welcome to Tic Tac Toe!"
-    TicTacToe.Board.start |> play
+    TicTacToe.Board.start |> play(9)
   end
 
-  defp play(board) do
-    print_board(board)
+  defp play(board, moves) when moves === 1 do
+  end
 
-    # todo:
-      # * draw? functions in TicTacToe.Board
-      # * play loop
+  defp play(board, moves) do
+    print_board(board)
+    pos = (IO.gets "Where would you like to move? (1-9): ")
+          |> String.strip
+          |> String.to_integer
+
+    TicTacToe.Board.move(board, pos)
+
+    play(board, moves - 1)
   end
 
   defp print_board(board) do
