@@ -1,9 +1,6 @@
 defmodule TicTacToe.Game do
   alias TicTacToe.Board, as: Board
 
-  # TODO:
-    # handle crap input for moves (non integers/just pressing return)
-    # center draw/win text
   def main(_args) do
     start
   end
@@ -28,7 +25,7 @@ defmodule TicTacToe.Game do
   defp make_move(board) do
     pos = (IO.gets "Where would you like to move? (1-9): ")
           |> String.strip
-          |> String.to_integer
+          |> convert_input
 
     case Board.move(board, pos) do
       {:ok, _} -> play(board)
@@ -41,12 +38,20 @@ defmodule TicTacToe.Game do
     end
   end
 
+  defp convert_input(input) do
+    try do
+      String.to_integer(input)
+    rescue
+      ArgumentError -> 10
+    end
+  end
+
   defp end_game(board, :draw) do
-    IO.write "\nCat's Game!"
+    IO.write "\n   Draw!\n"
     print_board(board)
   end
   defp end_game(board, :winner) do
-    IO.write "\n#{Board.winner(board)} Wins!"
+    IO.write "\n  #{Board.winner(board)} Wins!\n"
     print_board(board)
   end
 
