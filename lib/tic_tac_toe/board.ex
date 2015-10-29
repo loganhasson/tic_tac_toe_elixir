@@ -24,6 +24,14 @@ defmodule TicTacToe.Board do
     GenServer.call(board, :winner)
   end
 
+  def has_winner(board) do
+    GenServer.call(board, :has_winner)
+  end
+
+  def is_full(board) do
+    GenServer.call(board, :is_full)
+  end
+
   def handle_call(:board, _from, board) do
     {:reply, board, board}
   end
@@ -38,18 +46,26 @@ defmodule TicTacToe.Board do
     {:reply, board |> _winner, board}
   end
 
-  defp _move(board, position) do
-    position = position - 1
-    Enum.fetch(board, position) |> handle_move(board, position)
+  def handle_call(:has_winner, _from, board) do
+    {:reply, board |> _winner |> _has_winner, board}
   end
 
-  defp handle_move({:ok, " "}, board, position) do
+  def handle_call(:is_full, _from, board) do
+    {:reply, board |> _is_full, board}
+  end
+
+  defp _move(board, position) do
+    position = position - 1
+    Enum.fetch(board, position) |> make_move(board, position)
+  end
+
+  defp make_move({:ok, " "}, board, position) do
     {:ok, List.replace_at(board, position, current_player(board))}
   end
-  defp handle_move({:ok, _}, board, _position) do
+  defp make_move({:ok, _}, board, _position) do
     {:taken, board}
   end
-  defp handle_move(:error, board, _position) do
+  defp make_move(:error, board, _position) do
     {:error, board}
   end
 
@@ -66,7 +82,14 @@ defmodule TicTacToe.Board do
   defp get_winner(combo, board), do: Enum.at(board, List.first(combo))
 
   defp all_one_token(tokens) do
-    Enum.all?(tokens, &(&1 == "X")) || Enum.all?(tokens, &(&1 == "O"))
+    Enum.all?(tokens, &(&1 === "X")) || Enum.all?(tokens, &(&1 === "O"))
+  end
+
+  defp _has_winner(nil), do: false
+  defp _has_winner(winner), do: true
+
+  defp _is_full(board) do
+    board |> Enum.all?(&(&1 !== " "))
   end
 
   defp current_player(board) do
