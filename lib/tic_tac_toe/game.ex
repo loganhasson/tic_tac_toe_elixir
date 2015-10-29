@@ -12,7 +12,7 @@ defmodule TicTacToe.Game do
     print_board(board)
 
     # todo:
-      # * winner/winner?/draw? functions in TicTacToe.Board
+      # * draw? functions in TicTacToe.Board
       # * play loop
   end
 

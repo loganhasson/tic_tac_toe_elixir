@@ -13,16 +13,28 @@ defmodule TicTacToe.BoardTest do
 
     full_board = TicTacToe.Board.start
     TicTacToe.Board.move(full_board, 1)
-    TicTacToe.Board.move(full_board, 2)
-    TicTacToe.Board.move(full_board, 3)
     TicTacToe.Board.move(full_board, 4)
+    TicTacToe.Board.move(full_board, 2)
     TicTacToe.Board.move(full_board, 5)
+    TicTacToe.Board.move(full_board, 3)
     TicTacToe.Board.move(full_board, 6)
     TicTacToe.Board.move(full_board, 7)
     TicTacToe.Board.move(full_board, 8)
     TicTacToe.Board.move(full_board, 9)
 
-    {:ok, board: board, winning_board: winning_board, full_board: full_board}
+    draw_board = TicTacToe.Board.start
+    TicTacToe.Board.move(draw_board, 1)
+    TicTacToe.Board.move(draw_board, 2)
+    TicTacToe.Board.move(draw_board, 3)
+    TicTacToe.Board.move(draw_board, 6)
+    TicTacToe.Board.move(draw_board, 4)
+    TicTacToe.Board.move(draw_board, 7)
+    TicTacToe.Board.move(draw_board, 5)
+    TicTacToe.Board.move(draw_board, 9)
+    TicTacToe.Board.move(draw_board, 8)
+
+
+    {:ok, board: board, winning_board: winning_board, full_board: full_board, draw_board: draw_board}
   end
 
   test "it creates an empty board on start", %{board: board} do
@@ -73,5 +85,17 @@ defmodule TicTacToe.BoardTest do
 
   test "it knows when the board is full", %{full_board: full_board} do
     assert TicTacToe.Board.is_full(full_board) === true
+  end
+
+  test "it knows when there is not a draw when there is not a full board", %{winning_board: winning_board} do
+    assert TicTacToe.Board.is_draw(winning_board) === false
+  end
+
+  test "it knows when there is not a draw when there is a full board with a winner", %{full_board: full_board} do
+    assert TicTacToe.Board.is_draw(full_board) === false
+  end
+
+  test "it knows when there is a draw", %{draw_board: draw_board} do
+    assert TicTacToe.Board.is_draw(draw_board) === true
   end
 end

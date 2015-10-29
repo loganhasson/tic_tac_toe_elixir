@@ -32,6 +32,10 @@ defmodule TicTacToe.Board do
     GenServer.call(board, :is_full)
   end
 
+  def is_draw(board) do
+    GenServer.call(board, :is_draw)
+  end
+
   def handle_call(:board, _from, board) do
     {:reply, board, board}
   end
@@ -47,11 +51,15 @@ defmodule TicTacToe.Board do
   end
 
   def handle_call(:has_winner, _from, board) do
-    {:reply, board |> _winner |> _has_winner, board}
+    {:reply, board |> _has_winner, board}
   end
 
   def handle_call(:is_full, _from, board) do
     {:reply, board |> _is_full, board}
+  end
+
+  def handle_call(:is_draw, _from, board) do
+    {:reply, board |> _is_draw, board}
   end
 
   defp _move(board, position) do
@@ -85,11 +93,19 @@ defmodule TicTacToe.Board do
     Enum.all?(tokens, &(&1 === "X")) || Enum.all?(tokens, &(&1 === "O"))
   end
 
-  defp _has_winner(nil), do: false
-  defp _has_winner(winner), do: true
+  defp _has_winner(board) do
+    board |> _winner |> check_winner
+  end
+
+  defp check_winner(nil), do: false
+  defp check_winner(_winner), do: true
 
   defp _is_full(board) do
     board |> Enum.all?(&(&1 !== " "))
+  end
+
+  defp _is_draw(board) do
+    _is_full(board) && !(_has_winner(board))
   end
 
   defp current_player(board) do
