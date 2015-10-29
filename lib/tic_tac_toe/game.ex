@@ -1,12 +1,15 @@
 defmodule TicTacToe.Game do
   alias TicTacToe.Board, as: Board
 
+  # TODO:
+    # handle crap input for moves (non integers/just pressing return)
+    # center draw/win text
   def main(_args) do
     start
   end
 
   defp start do
-    IO.puts "Welcome to Tic Tac Toe!\n"
+    IO.puts "\nWelcome to Tic Tac Toe!"
     Board.start |> play
   end
 
@@ -30,20 +33,20 @@ defmodule TicTacToe.Game do
     case Board.move(board, pos) do
       {:ok, _} -> play(board)
       {:taken, _} ->
-        IO.puts "That position is taken...make another move!\n"
+        IO.puts "\nThat position is taken...make another move!\n"
         make_move(board)
       {:error, _} ->
-        IO.puts "Invalid move...make another one!\n"
+        IO.puts "\nInvalid move...make another one!\n"
         make_move(board)
     end
   end
 
   defp end_game(board, :draw) do
-    IO.puts "Cat's Game!\n"
+    IO.write "\nCat's Game!"
     print_board(board)
   end
   defp end_game(board, :winner) do
-    IO.puts "#{Board.winner(board)} Wins!\n"
+    IO.write "\n#{Board.winner(board)} Wins!"
     print_board(board)
   end
 
@@ -62,10 +65,10 @@ defmodule TicTacToe.Game do
   defp print_board(board) do
     output = TicTacToe.Board.board(board)
 
-    IO.puts " #{Enum.at(output, 0)} | #{Enum.at(output, 1)} | #{Enum.at(output, 2)} "
+    IO.puts "\n #{Enum.at(output, 0)} | #{Enum.at(output, 1)} | #{Enum.at(output, 2)} "
     IO.puts "-----------"
     IO.puts " #{Enum.at(output, 3)} | #{Enum.at(output, 4)} | #{Enum.at(output, 5)} "
     IO.puts "-----------"
-    IO.puts " #{Enum.at(output, 6)} | #{Enum.at(output, 7)} | #{Enum.at(output, 8)} "
+    IO.puts " #{Enum.at(output, 6)} | #{Enum.at(output, 7)} | #{Enum.at(output, 8)} \n"
   end
 end
